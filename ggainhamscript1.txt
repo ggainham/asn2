@@ -1,0 +1,23 @@
+
+SHOW DATABASES;
+DROP DATABASE IF EXISTS ggainhamassign2db;
+CREATE DATABASE ggainhamassign2db;
+USE ggainhamassign2db;
+
+GRANT USAGE ON *.* TO 'ta'@'localhost';
+DROP USER 'ta'@'localhost';
+CREATE USER 'ta'@'localhost' IDENTIFIED BY 'cs3319';
+GRANT ALL PRIVILEGES ON ggainhamassign2db.* TO 'ta'@'localhost';
+FLUSH PRIVILEGES;
+
+SHOW TABLES;
+
+CREATE TABLE agent (agentid VARCHAR(2) NOT NULL, PRIMARY KEY (agentid), firstname VARCHAR(30), lastname VARCHAR(30), city VARCHAR(15), commission INT NOT NULL);
+
+CREATE TABLE product (productid VARCHAR(2) NOT NULL, PRIMARY KEY (productid), itemamount INT NOT NULL, description VARCHAR(20), itemcost FLOAT NOT NULL);
+
+CREATE TABLE customer (customerid VARCHAR(2), firstname VARCHAR(30), lastname VARCHAR(30), city VARCHAR(15), phonenumber VARCHAR(15), agentid VARCHAR(2), PRIMARY KEY (customerid), FOREIGN KEY (agentid) REFERENCES agent(agentid));
+
+CREATE TABLE customerpurchasesproduct (customerid VARCHAR(2) NOT NULL, productid VARCHAR(2) NOT NULL, quantity INT NOT NULL, FOREIGN KEY (customerid) REFERENCES customer(customerid), FOREIGN KEY (productid) REFERENCES product(productid));
+
+SHOW TABLES;
