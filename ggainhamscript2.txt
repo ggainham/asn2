@@ -1,0 +1,72 @@
+USE ggainhamassign2db;
+
+LOAD DATA LOCAL INFILE 'loaddatafall2018.txt' INTO TABLE product FIELDS TERMINATED BY ',' (productid, description, itemcost, itemamount);
+
+INSERT INTO product(productid, description, itemcost, itemamount) VALUES ('66', 'Elbow pads', 14.25, 120);
+INSERT INTO product(productid, description, itemcost, itemamount) VALUES ('67', 'things', 42.35, 52);
+
+INSERT INTO agent(agentid, firstname, lastname, city, commission) VALUES ('99', 'Hugh', 'Grant', 'Springfield', 16);
+INSERT INTO agent(agentid, firstname, lastname, city, commission) VALUES ('22', 'Courtney', 'Cox', 'New York', 25);
+INSERT INTO agent(agentid, firstname, lastname, city, commission) VALUES ('66', 'Rosie', 'ODonnell', 'Ottawa', 100);
+INSERT INTO agent(agentid, firstname, lastname, city, commission) VALUES ('33', 'David', 'Letterman', 'Bedrock', 100);
+INSERT INTO agent(agentid, firstname, lastname, city, commission) VALUES ('11', 'Regis', 'Philbin',  'Boston', 33);
+INSERT INTO agent(agentid, firstname, lastname, city, commission) VALUES ('12', 'Rosie', 'Cox',  'Ottawa', 50);
+INSERT INTO agent(agentid, firstname, lastname, city, commission) VALUES ('7', 'George', 'Gainham', 'Hamilton', 100);
+
+-- customer insertions
+INSERT INTO customer(customerid, firstname, lastname, city, phonenumber) VALUES ('21', 'Homer', 'Simpson', 'Springfield', '686-8956');
+INSERT INTO customer(customerid, firstname, lastname, city, phonenumber) VALUES ('31', 'Sideshow', 'Bob', 'Springfield', '686-5555');
+INSERT INTO customer(customerid, firstname, lastname, city, phonenumber) VALUES ('12', 'Monty', 'Burns', 'Springfield', '789-0000');
+INSERT INTO customer(customerid, firstname, lastname, city, phonenumber) VALUES ('15', 'Fred', 'Flintstone', 'Bedrock', '777-2345');
+INSERT INTO customer(customerid, firstname, lastname, city, phonenumber) VALUES ('13', 'Super', 'Man', 'Kypto', '888-1234');
+INSERT INTO customer(customerid, firstname, lastname, city, phonenumber) VALUES ('10', 'Barney', 'Rubble', 'Bedrock', '777-1234');
+INSERT INTO customer(customerid, firstname, lastname, city, phonenumber) VALUES ('14', 'Peter', 'Griffens', 'Providence', '987-4567');
+
+-- homer purchase info
+INSERT INTO customerpurchasesproduct(customerid, productid, quantity) VALUES ('21', '99', 20);
+INSERT INTO customerpurchasesproduct(customerid, productid, quantity) VALUES ('21', '12', 14);
+INSERT INTO customerpurchasesproduct(customerid, productid, quantity) VALUES ('21', '66', 10);
+
+-- sideshow purchase info
+INSERT INTO customerpurchasesproduct(customerid, productid, quantity) VALUES ('31', '99', 1);
+INSERT INTO customerpurchasesproduct(customerid, productid, quantity) VALUES ('31', '12', 2);
+INSERT INTO customerpurchasesproduct(customerid, productid, quantity) VALUES ('31', '78', 4);
+INSERT INTO customerpurchasesproduct(customerid, productid, quantity) VALUES ('31', '66', 2);
+
+-- Fred purchase info
+INSERT INTO customerpurchasesproduct(customerid, productid, quantity) VALUES ('15', '66', 2);
+INSERT INTO customerpurchasesproduct(customerid, productid, quantity) VALUES ('15', '78', 2);
+
+-- Peter purchase info
+INSERT INTO customerpurchasesproduct(customerid, productid, quantity) VALUES ('14', '66', 19);
+
+-- Hugh Grant agent info
+UPDATE customer SET agentid = '99' WHERE customerid = '21' OR customerid = '12' OR customerid = '14';
+
+-- David Letterman agent info
+UPDATE customer SET agentid = '33' WHERE customerid = '13';
+
+-- Regis Philbin agent info
+UPDATE customer SET agentid = '11' WHERE customerid = '10' OR customerid = '15';
+
+-- Rosie O'Donnell agent info
+UPDATE customer SET agentid = '66' WHERE customerid = '31';
+
+SELECT * FROM agents;
+SELECT * FROM customers;
+SELECT * FROM products;
+SELECT * FROM purchase;
+
+-- superman -> wonderwoman
+UPDATE customers SET fName='Wonder', lName='Woman' WHERE fName='Super' AND lName='Man';
+
+-- sideshow only buys 5
+UPDATE purchase SET quantity=5 WHERE customerID=(SELECT customerID FROM customers WHERE fName='Sideshow' AND lName='Bob');
+
+-- Regis only like Boston ppl lol
+UPDATE customers SET city='Boston' WHERE agentID=(SELECT agentID FROM agents WHERE fName='Regis' AND lName='Philbin');
+ 
+SELECT * FROM agents;
+SELECT * FROM customers;
+SELECT * FROM products;
+SELECT * FROM purchase;

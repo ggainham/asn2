@@ -1,0 +1,30 @@
+USE ggainhamassign2db;
+ 
+SELECT * FROM agent;
+SELECT * FROM customer;
+SELECT * FROM customerpurchasesproduct;
+SELECT * FROM product;
+
+-- Create a view that shows the customer first name and last name, the description of the products they have bought, the quantity of the products they have bought, the price of the product and a total cost to purchase that many items of each product. Order the view by the last name.
+
+CREATE VIEW purchase AS SELECT customer.firstname, customer.lastname, product.description, customerpurchasesproduct.quantity, product.itemcost, product.itemcost * customerpurchasesproduct.quantity AS price FROM customer, product, customerpurchasesproduct WHERE customerpurchasesproduct.productid = product.productid AND customer.customerid = customerpurchasesproduct.customerid ORDER BY customer.lastname;
+
+-- Prove that your view works by selecting all the rows from it.
+SELECT * FROM purchase;
+
+-- Now select only the rows from the view (all columns from the view) where customers spent more than 100 dollars. 
+SELECT * FROM purchase WHERE price > 100;
+
+-- Delete the product that you made up using your product's description.
+DELETE FROM product WHERE description = 'things';
+
+-- Prove that the delete worked.
+SELECT * FROM product WHERE description = 'things';
+
+-- Prove that the delete worked.
+SELECT * FROM product WHERE description = 'things';
+
+-- Delete all agents who are from Springfield.  
+DELETE FROM agent WHERE city = 'Springfield';
+
+-- EXPLANATION: since there are customers who reference the agent(s) from Springfield, we will not be able to delete the agents until the customer rows are deleted.
